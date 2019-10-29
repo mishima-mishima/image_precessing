@@ -4,8 +4,22 @@ import numpy as np
 from PIL import Image, ImageFilter
 import cv2
 
-# divide
 def divide(image, divide_size=(16, 16)):
+  """
+  divide input image into any size
+
+  Parameters
+  ----------
+  image : string
+    file name of input image(path)
+  divide_size : (int, int)
+    the size of after divide image
+
+  Returns
+  -------
+  divided : numpy.ndarray
+    the list of divided image
+  """
   im = np.array(Image.open(image))
   (image_width, image_height,channels) = im.shape
   divide_width, divide_height = divide_size
@@ -23,8 +37,24 @@ def divide(image, divide_size=(16, 16)):
   divided = np.array(divided)
   return divided
 
-# combine
 def combine(images, divide_size=(16, 16), image_size=(192, 256, 4)):
+  """
+  combine input image list
+
+  Parameters
+  ----------
+  images : numpy.ndarray
+    the list of divided image
+  divide_size : (int, int)
+    the size of after divide image
+  image_size : (int, int)
+    the size of original image
+
+  Returns
+  -------
+  combined_image : numpy.ndarray
+    combined image
+  """
   (image_width, image_height,channels) = image_size
   divide_width, divide_height = divide_size
 
@@ -44,9 +74,9 @@ def combine(images, divide_size=(16, 16), image_size=(192, 256, 4)):
 
 # usage
 def main():
-  images = divide('test.png')
-  combined_image = combine(images)
-  combined_image = combined_image[:, :, [2, 1, 0, 3]]
+  images = divide('test.png') # divide image
+  combined_image = combine(images) # combine image
+  combined_image = combined_image[:, :, [2, 1, 0, 3]] # change the order of channels(im this case, this image has 4 channels)
   cv2.imwrite('combined.png', combined_image)
 
 if __name__=='__main__':
